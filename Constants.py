@@ -15,9 +15,16 @@ WIDTH = 1200
 HEIGHT = 1000
 
 # sets constants for wizard size
-
 wizardWidth = lambda originalWidth: originalWidth // 3
 wizardHeight = lambda originalHeight: originalHeight // 3
+
+# sets constants for spider size
+spiderWidth = lambda originalWidth: originalWidth // 5
+spiderHeight = lambda originalHeight: originalHeight // 5
+
+# sets constants for fireball size
+projectileWidth = lambda originalWidth: originalWidth // 25
+projectileHeight = lambda originalHeight: originalHeight // 25
 
 # constants for colors
 RED = [0xe3, 0x1b, 0x23]
