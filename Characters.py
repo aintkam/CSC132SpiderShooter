@@ -175,7 +175,7 @@ class WaveManager:
         
         self.updateWave()
         
-        # Adds decreases spawn cooldown and increases spider speed to the game after given amount of waves
+        # Decreases spawn cooldown and increases spider speed to the game after given amount of waves
         # To increase difficulty
         if self.currentWave >= 3:
             self.spawnTimer = 450
