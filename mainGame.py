@@ -7,23 +7,17 @@ clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
-# Sets the groups for sprites
-spiderGroup = pygame.sprite.Group()
-
-playerGroup = pygame.sprite.Group()
-
-projectileGroup = pygame.sprite.Group()
-
 # Creates the player
 character = Wizard("Sprites/wizard.png",  wizardWidth, wizardHeight, projectileGroup, WIDTH // 2.15, HEIGHT //1.15)
 
 # Adds player to its group
 playerGroup.add(character)
 
+waveManager = WaveManager()
+
 # Initializes the score and lives for the game
 score = 0
 lives = 3
-
 # Initializes the game running
 running = True
 
@@ -32,6 +26,7 @@ gameOver = False
 
 while running:
     if not gameOver:
+        waveManager.update()
         for event in pygame.event.get():
 
             # Checks if user exits the window or presses escape then quits game
@@ -43,7 +38,9 @@ while running:
             
             # Adds a new spider to the game
             elif event.type == ADDSPIDER:
+                print("triggered")
                 newSpider = Spider("Sprites/spider.png", spiderWidth, spiderHeight, randint(0, 150), randint(40, 750))
+
                 spiderGroup.add(newSpider)
         
         # Ends the game if the player runs out of lives
@@ -65,6 +62,8 @@ while running:
         # updates the projectile's state
         projectileGroup.update()
 
+        waveManager.update()
+        
         # Adds collisions between projectile and spider, automatically kills both if they collide
         collisions = pygame.sprite.groupcollide(projectileGroup, spiderGroup, True, True)
 
@@ -84,7 +83,7 @@ while running:
         screen.blit(livesText, (15, 10))
 
         # Draws the score in the top right hand corner
-        scoreText = font.render(f"Score: {score}", True, (0,0,0))
+        scoreText = font.render(f"Wave: {waveManager.currentWave}", True, (0,0,0))
         screen.blit(scoreText, (WIDTH-115, 10))
 
         # draws the character, spiders, and projectiles to the screen
@@ -112,15 +111,23 @@ while running:
                     elif event.key == K_RETURN:
                         lives = 3
                         gameOver = False
-
-                        spiderGroup.empty()
+ 
                         projectileGroup.empty()
+                        spiderGroup.empty()
+
+                        # Sets player at the spawnpoint (middle of screen)
                         character.rect.center = (WIDTH // 2.15, HEIGHT //1.15)
+
+                        # Resetting the values for the waves for new game
+                        waveManager.currentWave = 1
+                        waveManager.spidersSpawned = 0
+                        waveManager.totalSpiders = waveManager.numSpiders()
+                        waveManager.timeToSpawn = waveManager.spawnTimer
 
             screen.fill((255, 255, 255))
 
             # Adds text to indicate the game is over and shows the player their score
-            gameOverText = gameOverFont.render(f"Game Over: You made it to {score}!", True, (0,0,0))
+            gameOverText = gameOverFont.render(f"Game Over: You made it to wave {waveManager.currentWave}!", True, (0,0,0))
             screen.blit(gameOverText, (WIDTH // 2 - 250, HEIGHT // 2))
 
             # Text for telling the player what key restarts the game

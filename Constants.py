@@ -18,9 +18,6 @@ HEIGHT = 1000
 # sets FPS constant for the game
 fps = 144
 
-# Time delay in ms for adding a new spider
-spiderCooldown = 1000
-
 # Font used for on-screen text
 font = pygame.font.SysFont(None, 36)
 
@@ -29,7 +26,13 @@ gameOverFont = pygame.font.SysFont(None, 50)
 
 # Creating a new custom event for adding more spiders
 ADDSPIDER = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDSPIDER, spiderCooldown)
+
+# Sets the groups for sprites
+spiderGroup = pygame.sprite.Group()
+
+playerGroup = pygame.sprite.Group()
+
+projectileGroup = pygame.sprite.Group()
 
 # sets constants for wizard size
 wizardWidth = lambda originalWidth: originalWidth // 3
