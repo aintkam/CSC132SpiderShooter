@@ -8,11 +8,28 @@
 # import libraries that you will need
 import pygame
 from random import randint, choice
+
 pygame.init()
 
 # constants for screen size
 WIDTH = 1200
 HEIGHT = 1000
+
+# sets FPS constant for the game
+fps = 144
+
+# Time delay in ms for adding a new spider
+spiderCooldown = 1000
+
+# Font used for on-screen text
+font = pygame.font.SysFont(None, 36)
+
+# Font used for the "Game Over" screen
+gameOverFont = pygame.font.SysFont(None, 50)
+
+# Creating a new custom event for adding more spiders
+ADDSPIDER = pygame.USEREVENT + 1
+pygame.time.set_timer(ADDSPIDER, spiderCooldown)
 
 # sets constants for wizard size
 wizardWidth = lambda originalWidth: originalWidth // 3
@@ -46,4 +63,5 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
     K_SPACE,
+    K_RETURN
 )
