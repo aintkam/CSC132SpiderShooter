@@ -1,9 +1,13 @@
 from pygame.sprite import Group
 from Constants import *
 from Characters import *
+from WaveManager import *
 
 # Clock for updating the game on a set interval (FPS)
 clock = pygame.time.Clock()
+
+bg = pygame.image.load("Sprites/gamebg.jpg")
+bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
@@ -15,9 +19,7 @@ playerGroup.add(character)
 
 waveManager = WaveManager()
 
-# Initializes the score and lives for the game
-score = 0
-lives = 3
+
 # Initializes the game running
 running = True
 
@@ -44,11 +46,11 @@ while running:
                 spiderGroup.add(newSpider)
         
         # Ends the game if the player runs out of lives
-        if lives <= 0:
+        if waveManager.lives <= 0:
             gameOver = True
 
         # Sets background of game to white
-        screen.fill((255, 255, 255))
+        screen.blit(bg, (0,0))
 
         # Checks any keys pressed
         pressedKeys = pygame.key.get_pressed()
@@ -75,11 +77,11 @@ while running:
         # Once the spider hits the border, it gets killed and lives get decreased
         for spider in spiderGroup:
             if spider.rect.center[0] >= WIDTH:
-                lives -= 1
+                waveManager.lives -= 1
                 spider.kill()
         
         # Draws the number of lives in the top left hand corner
-        livesText = font.render(f"Lives: {lives}", True, (0,0,0))
+        livesText = font.render(f"Lives: {waveManager.lives}", True, (0,0,0))
         screen.blit(livesText, (15, 10))
 
         # Draws the score in the top right hand corner
@@ -109,7 +111,7 @@ while running:
 
                     # Restarts the game if user presses enter
                     elif event.key == K_RETURN:
-                        lives = 3
+                        waveManager.lives = 3
                         gameOver = False
  
                         projectileGroup.empty()
@@ -124,7 +126,7 @@ while running:
                         waveManager.totalSpiders = waveManager.numSpiders()
                         waveManager.timeToSpawn = waveManager.spawnTimer
 
-            screen.fill((255, 255, 255))
+            screen.blit(bg, (0,0))
 
             # Adds text to indicate the game is over and shows the player their score
             gameOverText = gameOverFont.render(f"Game Over: You made it to wave {waveManager.currentWave}!", True, (0,0,0))

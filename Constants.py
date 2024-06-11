@@ -11,6 +11,9 @@ from random import randint, choice
 
 pygame.init()
 
+# Initializes the score for the game
+score = 0
+
 # constants for screen size
 WIDTH = 1200
 HEIGHT = 1000
